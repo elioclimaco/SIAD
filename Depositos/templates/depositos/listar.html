@@ -1,0 +1,378 @@
+{% extends 'base/estructura.html' %}
+
+
+
+{% block Scripts %}
+    <script type="text/javascript">
+
+        function searchDepartment() {
+            $('#department_datagrid').datagrid('load', serializeObject($('#department_searchForm')));
+        }
+
+        function clear() {
+            $('#admin_yhgl_layout input[name=departmentName]').val('');
+            $('#department_datagrid').datagrid('load', {});
+        }
+
+        function addDepartment() {
+            parent.dialog({
+                id: 'department_dialog',
+                title : 'Agregar Órgano Jurisdiccional',
+                href : '/depositos/formulario/add',
+                width : 400,
+                height : 280,
+                buttons : [ {
+                        text : 'Guardar',
+                        handler : function() {
+                            parent.saveDepartment('/depositos/formulario/add','add');
+                        }
+                    } ],
+                onLoad : function() {
+                    parent.setState();
+                }
+            });
+        }
+
+        function editDepartment() {
+            var rows = $('#department_datagrid').datagrid('getSelections');
+            if (rows.length == 1) {
+                if (rows[0].Entregado == false || rows[0].Entregado == 'False')
+                {
+                    var departmentId= rows[0].id;
+                    //window.alert('/depositos/formulario/edit/'+departmentId);
+                    parent.dialog({
+                        id: 'department_dialog',
+                        title : 'Modificar depósito',
+                        href : '/depositos/formulario/edit/'+departmentId,
+                        width : 400,
+                        height : 280,
+                        buttons : [ {
+                                text : 'Guardar',
+                                handler : function() {
+                                    parent.saveDepartment('/depositos/formulario/edit/'+departmentId,'edit');
+                                }
+                            } ],
+                        onLoad : function() {
+                            parent.setState();
+                        }
+                    });
+                }
+                else if (rows[0].Entregado == true || rows[0].Entregado == 'True')
+                {
+                    parent.messagerAlert('Mensaje para el Sabueso:', 'Oe sabueso el depósito ya ha sido entregado, por lo tanto no se puede modificar.', 'info');
+                }
+                else
+                {
+                    parent.messagerAlert('Mensaje:', 'El depósito tiene un estado desconocido.', 'error')
+                }
+            } else if (rows.length > 1) {
+                parent.messagerAlert('Mensaje:', 'Solo se puede modificar un depósito a la vez.', 'error');
+            } else {
+                parent.messagerAlert('Mensaje:', 'Seleccione una depósito.', 'error');
+            }
+        }
+
+        function EntregarDeposito() {
+            var rows = $('#department_datagrid').datagrid('getSelections');
+
+            if (rows.length == 1) {
+                var departmentId= rows[0].id;
+
+                if (rows[0].Entregado == false || rows[0].Entregado == 'False')
+                {
+                    parent.dialog({
+                        id: 'department_dialog',
+                        title : 'Entregar depósito',
+                        href : '/depositos/formulario/entregar/'+departmentId,
+                        width : 400,
+                        height : 280,
+                        buttons : [ {
+                                text : 'Entregar',
+                                handler : function() {
+                                    parent.saveDepartment('/depositos/formulario/entregar/'+departmentId,'edit');
+                                }
+                            } ],
+                        onLoad : function() {
+                            parent.setState();
+                        }
+                    });
+                }
+                else if (rows[0].Entregado == true || rows[0].Entregado == 'True')
+                {
+                    parent.messagerAlert('Mensaje:', 'El depósito ya ha sido entregado.', 'info');
+                }
+                else
+                {
+                    parent.messagerAlert('Mensaje:', 'El depósito tiene un estado desconocido.', 'error')
+                }
+            } else if (rows.length > 1) {
+                parent.messagerAlert('Mensaje:', 'Solo se puede entregar un depósito a la vez.', 'error');
+            } else {
+                parent.messagerAlert('Mensaje:', 'Seleccione un depósito.', 'error');
+            }
+        }
+
+
+        function removeDepartment() {
+            var rows = $('#department_datagrid').datagrid('getChecked');
+            var ids = [];
+            if (rows.length > 0) {
+                if (rows[0].Entregado == false || rows[0].Entregado == 'False')
+                {
+                    $.messager.confirm('Confirmar:', 'Desea eliminar el depósito seleccionado?', function(r) {
+                    if (r) {
+                        for ( var i = 0; i < rows.length; i++) {
+                            ids.push(rows[i].id);
+                        }
+                        $.ajax({
+                            url : '/depositos/formulario/del',
+                            data : {
+                                ids : ids.join(',')
+                            },
+                            dataType : 'json',
+                            method: 'get',
+                            success : function(r) {
+                                console.info('result:'+r.success);
+                                if(r.success){
+                                    $('#department_datagrid').datagrid('load');
+                                    $('#department_datagrid').datagrid('unselectAll');
+                                }
+                                $.messager.show({
+                                    title : 'Mensaje:',
+                                    msg : r.msg
+                                });
+                            },
+                            error:function (XMLHttpRequest, textStatus, errorThrown) {
+    //                                    $.messager.show({
+    //                                        title : 'Mensaje:',
+    //                                        msg : XMLHttpRequest.responseText
+    //                                    });
+                                alert(XMLHttpRequest.responseText);
+                            }
+                        });
+                    }
+                });
+                }
+                else if (rows[0].Entregado == true || rows[0].Entregado == 'True')
+                {
+                    parent.messagerAlert('Mensaje para el Sabueso:', 'Oe sabueso el depósito ya ha sido entregado, por lo tanto no se puede eliminar.', 'info');
+                }
+                else
+                {
+                    parent.messagerAlert('Mensaje:', 'El depósito tiene un estado desconocido.', 'error')
+                }
+
+
+            } else {
+                $.messager.show({
+                    title : 'Mensaje:',
+                    msg : 'Seleccione un registro！'
+                });
+            }
+        }
+
+
+function formatPrice(val,row){
+    //if (val > 20.00){
+        return '<span style="color:blue;">S/. '+val+'</span>';
+    //} else {
+    //    return val;
+    //}
+}
+
+$(function(){
+			$('#department_datagrid').datagrid({
+				/*title:'Custom Sort',
+				iconCls:'icon-ok',
+				width:520,
+				height:250,
+				singleSelect:true,
+				remoteSort:false,
+				columns:[[
+					{field:'itemid',title:'Item ID',width:60,sortable:true},
+					{field:'listprice',title:'List Price',width:70,align:'right',sortable:true},
+					{field:'unitcost',title:'Unit Cost',width:70,align:'right',sortable:true},
+					{field:'attr1',title:'Attribute',width:120,sortable:true},
+					{field:'date',title:'Date',width:80,sortable:true,align:'center',*/
+						sorter:function(a,b){
+							a = a.split('/');
+							b = b.split('/');
+							if (a[2] == b[2]){
+								if (a[0] == b[0]){
+									return (a[1]>b[1]?1:-1);
+								} else {
+									return (a[0]>b[0]?1:-1);
+								}
+							} else {
+								return (a[2]>b[2]?1:-1);
+							}
+						}
+					//},
+					//{field:'status',title:'Status',width:40,align:'center'}
+				//]]
+			}).datagrid('loadData', data);
+		});
+
+
+
+/*
+	function myformatter(date){
+		var y = date.getFullYear();
+		var m = date.getMonth()+1;
+		var d = date.getDate();
+		return (d<10?('0'+d):d) + '.' + (m<10?('0'+m):m) + '.' + y;
+	}
+	function myparser(s){
+		if (!s) return new Date();
+		var ss = (s.split('\.'));
+		var d = parseInt(ss[0],10);
+		var m = parseInt(ss[1],10);
+		var y = parseInt(ss[2],10);
+		if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+			return new Date(y,m-1,d);
+		} else {
+			return new Date();
+		}
+	}
+
+*/
+
+
+    /*
+     * Formatea la fecha por defecto USA
+     */
+    function formatProductDate(value,row)
+    {
+        var d = new Date(value);
+        return $.fn.datebox.defaults.formatter(d);
+        //return $.fn.datebox.defaults.formatter(d.format("yyyy-mm-dd"));
+    }
+
+
+        function changeP(){
+            var dg = $('#department_datagrid');
+            dg.datagrid('loadData',[]);
+            dg.datagrid({pagePosition:$('top').val()});
+            dg.datagrid('getPager').pagination({
+                layout:['list','sep','first','prev','sep',$('#p-style').val(),'sep','next','last','sep','refresh']
+            });
+        }
+
+    /*
+     * ComboBox
+     */
+
+    $('#listcombo').combobox({
+         //url:'get_lists.php',
+         //valueField:'id',
+         //textField:'listName',
+         //panelHeight:'auto',
+
+         onSelect:function(record){
+             alert(record.text);
+             $('#department_datagrid').datagrid({
+                //url:"get_users.php?id="+record.id
+                url:"http://localhost:8001/depositos/formulario/find"
+             });
+         }
+    });
+
+    /*
+    Buscador en la barra de herramientas.
+    */
+    function doSearch(){
+    $('#department_datagrid').datagrid('load',{
+        itemid: $('#itemid').val()
+        //,
+        //productid: $('#productid').val()
+    });
+}
+
+    </script>
+
+    <script type="text/javascript">
+
+    </script>
+
+
+{% endblock Scripts %}
+{#url:'{% url 'WS:DepositosPorJuzgado' instancia=instanciajudicial.id %}',#}
+{#url:'http://localhost:8001/depositos/formulario/find',#}
+{% block Contenido %}
+    <table class="easyui-datagrid" id="department_datagrid"
+        data-options="rownumbers:true,
+        singleSelect: true,
+        fit: true,
+        fitColumns: true,
+        url:'{% url 'WS:DepositosPorJuzgado' instancia=instanciajudicial.id condicion='SinEntregar' %}',
+        idField: 'id',
+        method: 'get',
+        pagination: true,
+        border: false,
+        toolbar: '#toolbar' "
+        pageSize="20"
+        style="width:100%; height:100%; overflow: hidden;"
+    >
+        <thead>
+            <tr>
+                <th data-options="field:'Numero',width:80,align:'right', width:100" sortable="true">Numero</th>
+                <th data-options="field:'Expediente',width:250, auto:true" sortable="true">Expediente</th>
+                <th data-options="field:'Monto',width:80,align:'right', width:100" formatter="formatPrice" sortable="true">Monto</th>
+                <th data-options="field:'Ingreso',width:250, width:150" sortable="true">Registrado</th>
+                <th data-options="field:'Entrega',width:60,align:'center', width:150" sortable="true">Entregado</th>
+                <th data-options="field:'Secretario',width:60,align:'center', width:150" sortable="true">Secretario</th>
+                <th data-options="field:'Entregado',width:60,align:'center', autoSizeColumn: true" hidden="false" sortable="true">Secretario</th>
+            </tr>
+        </thead>
+    </table>
+
+    <div id="toolbar" style="height:auto">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addDepartment()">Agregar</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeDepartment()">Eliminar</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="editDepartment()">Modificar</a>
+
+        <span class="button-sep"></span>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-redo',plain:true" onclick="EntregarDeposito()">Entregar</a>
+
+        <span class="button-sep"></span>
+        Mostrar
+        <select class="easyui-combobox" name="state" style="width:200px;"
+                data-options="
+                    valueField: 'id',
+                    onSelect: function(rec)
+                    {
+                        //var url = 'http://localhost:8001/ws/depositos/juzgado/'+rec.id;
+                        $('#department_datagrid').datagrid({
+                        url: 'http://localhost:8001/ws/depositos/juzgado/'+{{ instanciajudicial.id }}+'/'+rec.id
+                        });
+
+                    }
+        ">
+            <option value="SinEntregar" selected>Sin entregar</option>
+            <option value="Entregado">Entregado</option>
+        </select>
+
+        <span class="button-sep"></span>
+        <span>Búsqueda</span>
+        <input id="itemid" >
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Buscar</a>
+    </div>
+
+
+
+
+    <style>
+        .l-btn{
+            vertical-align:middle;
+        }
+        .button-sep{
+            display:inline-block;
+            width:0;
+            height:22px;
+            border-left:1px solid #ccc;
+            border-right:1px solid #fff;
+            vertical-align:middle;
+        }
+    </style>
+
+{% endblock Contenido %}

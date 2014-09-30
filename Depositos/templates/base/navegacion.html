@@ -1,0 +1,77 @@
+{% extends 'base/estructura.html' %}
+
+{% load static %}
+
+
+{% block Titulo %}
+{% endblock Titulo %}
+
+
+{% block Estilos %}
+{% endblock Estilos %}
+
+
+{% block Scripts %}
+{% endblock Scripts %}
+
+
+{% block Navegacion %}
+{% comment %}    <!-- Barra -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container-fluid"><!-- Contenedor -->
+            <div class="navbar-header"><!-- Agrupa Brand y Toggle -->
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#idBarraPrincipal"><!-- Toggle -->
+                    <span class="sr-only">Navegación alternativa</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button><!-- /Toggle -->
+
+                <!-- Brand -->
+                <a class="navbar-brand" href="#"><img src="{% static 'instancias/img/LogoPJ_01.png' %}"> Poder Judicial</a>
+            </div><!-- /Agrupa Brand y Toggle -->
+
+            <!-- Barra: Items -->
+            <div class="collapse navbar-collapse" id="idBarraPrincipal">
+                <ul class="nav navbar-nav">
+                    <li><a href=""><span class="glyphicon glyphicon-cog"></span> Depósitos</a></li>
+                    <!-- Barra: Dropdown -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-print"></span> Equipos <b class="caret"></b></a>
+
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Asignados</a></li>
+                            <li><a href="#">Historial</a></li>
+                            <li><a href="#">Pecosas</a></li>
+
+                            <li class="divider"></li>
+
+                            <li><a href="#">Reportes</a></li>
+                        </ul>
+                    </li>
+                    <!-- /Barra: Dropdown -->
+                </ul>
+
+                <!-- Barra Items Derecha -->
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Elio Clímaco <b class="caret"></b></a>
+
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Datos de Usuario</a></li>
+                            <li><a href="#">Cambiar contraseña</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Cerrar cesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /Barra: Items -->
+        </div><!-- /Contenedor -->
+    </nav>
+    <!-- /Barra -->{% endcomment %}
+{% endblock Navegacion %}
+
+
+{% block Contenido %}
+{% endblock Contenido %}

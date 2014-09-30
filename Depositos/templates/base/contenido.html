@@ -1,0 +1,41 @@
+{% extends 'base/navegacion.html' %}
+
+{% block Titulo %}
+{% endblock Titulo %}
+
+
+{% block Estilos %}
+{% endblock Estilos %}
+
+
+{% block Scripts %}
+{% endblock Scripts %}
+
+
+{% block Contenido %}
+    {% block Superior %}
+    {% endblock Superior %}
+
+{#    <div class="easyui-layout" title="Administración de Órganos Jurisdiccionales" style="width:100%;height:550px;padding:0px;">#}
+        <div class="easyui-layout" title="Administración de Órganos Jurisdiccionales"  style="width:100%; height:750px;padding:0px;">
+            <!-- Superior -->
+            <div data-options="region:'north'" style="height:60px;">Norte
+                <a href="{% url 'WS:Instancias' sede=1 %}">123</a>
+
+            </div>
+
+            <!-- Izquierda -->
+            <div data-options="region:'west',split:true" title="Sistema Administrativo" style="width:250px; height: 100%; padding:0px">
+                {% block Izquierda %}
+                {% endblock Izquierda %}
+            </div>
+
+            <!-- Centro -->
+            <div data-options="region:'center'" style="width: 100%; height: 100%; padding:0px">
+                {% block Centro %}
+                {% endblock Centro %}
+            </div>
+
+        </div>
+{#    </div>#}
+{% endblock Contenido %}

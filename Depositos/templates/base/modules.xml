@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE quote [ <!ATTLIST sub_system id ID #IMPLIED> ]>
+<root>
+    <sub_system id="sub_system_jczl" text="Información Básica" iconCls="">
+        <!--Item anidados del Acordión-->
+        <module id="module_yhgls" text="Órganos Jurisdiccionales" iconCls="icon-ok" url="">
+            <module id="module_bmgl" text="Juzgado de Paz Letrado" iconCls="icon-sum" url="department"/>
+            <module id="module_yhgl" text="Juzgado Mixto" iconCls="icon-reload" url="aclUser"/>
+            <module id="module_jsgl" text="Juzgado de Investigación Preparatoria" iconCls="icon-search" url=""/>
+            <module id="module_qxgl" text="3° Juzgado Penal Unipersonal" iconCls="icon-print" url=""/>
+            <module id="module_qxgl" text="1° Juzgado Penal Liquidador Transitorio" iconCls="icon-print" url=""/>
+            <module id="module_qxgl" text="2° Juzgado Penal Liquidador Transitorio" iconCls="icon-print" url=""/>
+        </module>
+    </sub_system>
+    <!--
+    <sub_system id="sub_system_wtjl" text="Capacitación" iconCls="icon-reload">
+        <module id="module_wtjl" text="Preguntas" iconCls="icon-reload" url=""/>
+        <module id="module_pxwd" text="Material" iconCls="icon-reload" url=""/>
+    </sub_system>
+    -->
+</root>

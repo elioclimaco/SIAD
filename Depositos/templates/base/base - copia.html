@@ -1,0 +1,130 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="es-pe">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>
+            {% block Titulo %}
+                Elio Clímaco
+            {% endblock Titulo %}
+        </title>
+
+
+
+        <!-- Pie de página -->
+{% comment %}        <link href="{% static 'instancias/css/sticky-footer.css' %}" rel="stylesheet">{% endcomment %}
+
+        <!-- Initializr -->
+        <link href="{% static 'instancias/css/main.css' %}" rel="stylesheet" type="text/css">
+{#        <script src="{% static 'instancias/js/vendor/modernizr-2.6.2.min.js' %}" type="text/javascript"></script>#}
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- DataTables -->
+        <link href="{% static 'instancias/css/jquery.dataTables-1.10.1.css' %}" rel="stylesheet" type="text/css">
+        <script src="{% static 'instancias/js/jquery-1.11.1.js' %}" type="application/javascript" language="JavaScript"></script>
+        <script src="{% static 'instancias/js/jquery.dataTables-1.10.1.js' %}" type="application/javascript" language="JavaScript"></script>
+
+
+        <!--/DataTables -->
+
+        <!-- Bootstrap -->
+        <link href="{% static 'instancias/css/bootstrap-3.2.0.css' %}" rel="stylesheet">
+        <script src="{% static 'instancias/js/bootstrap-3.2.0.js' %}" type="application/javascript" language="JavaScript"></script>
+
+{#        <link href="{% static 'instancias/css/themes/metro/easyui.css' %}" rel="stylesheet" type="text/css">#}
+        <link href="{% static 'instancias/css/themes/default/easyui.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'instancias/css/themes/icon.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'instancias/css/themes/color.css' %}" rel="stylesheet" type="text/css">
+
+        <script type="text/javascript" src="{% static 'instancias/js/jquery.easyui.min.js' %} "></script>
+
+        {% block Scripts %}
+
+        {% endblock Scripts %}
+    </head>
+
+    <body>
+        <!-- Barra -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container-fluid"><!-- Contenedor -->
+                <div class="navbar-header"><!-- Agrupa Brand y Toggle -->
+
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#idBarraPrincipal"><!-- Toggle -->
+                        <span class="sr-only">Navegación alternativa</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button><!-- /Toggle -->
+
+                    <!-- Brand -->
+                    <a class="navbar-brand" href="#"><img src="{% static 'instancias/img/LogoPJ_01.png' %}"> Poder Judicial</a>
+                </div><!-- /Agrupa Brand y Toggle -->
+
+                <!-- Barra: Items -->
+                <div class="collapse navbar-collapse" id="idBarraPrincipal">
+                    <ul class="nav navbar-nav">                        
+                        <li><a href=""><span class="glyphicon glyphicon-cog"></span> Depósitos</a></li>
+                        <!-- Barra: Dropdown -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-print"></span> Equipos <b class="caret"></b></a>
+                            
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Asignados</a></li>
+                                <li><a href="#">Historial</a></li>
+                                <li><a href="#">Pecosas</a></li>
+
+                                <li class="divider"></li>
+
+                                <li><a href="#">Reportes</a></li>
+                            </ul>
+                        </li>
+                        <!-- /Barra: Dropdown -->
+                    </ul>
+
+                    <!-- Barra Items Derecha -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Elio Clímaco <b class="caret"></b></a>
+
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Datos de Usuario</a></li>                                
+                                <li><a href="#">Cambiar contraseña</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Cerrar cesión</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /Barra: Items -->
+            </div><!-- /Contenedor -->
+        </nav>     
+        <!-- /Barra -->
+
+        {% block Contenido %}
+        {% endblock Contenido %}
+
+{% comment %}        <!-- Footer -->
+        <div id="footer">
+            <div class="container">
+                <p class="text-muted colortexto" >
+                    Área: Juzgado Penal de Investigación Preparatoria
+                </p>
+            </div>
+        </div>
+        <!-- /Footer -->{% endcomment %}
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+{#        <script src="{% static 'inventarios/js/jquery.min.js' %}"></script>#}
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+{#        <script src="{% static 'inventarios/js/bootstrap.min.js' %}"></script>#}
+        <script src="{% static 'inventarios/js/main.js' %}"></script>
+    </body>
+</html>
